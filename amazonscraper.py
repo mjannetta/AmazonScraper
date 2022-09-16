@@ -2,7 +2,6 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
-records = []
 
 
 def get_url(search):
@@ -27,7 +26,7 @@ def get_item_info(item):
 
 
 def search_items(search_term):
-    global records
+    records = []
     ser = Service(r"C:\Users\micha\Downloads\chromedriver_win32\chromedriver.exe")
     op = webdriver.ChromeOptions()
     driver = webdriver.Chrome(service=ser, options=op)
@@ -44,13 +43,13 @@ def search_items(search_term):
             if record:
                 records.append(record)
     driver.close()
+    return records
 
 
 def main():
     search_term = input("Enter the item you would like to scrape for: ")
-    search_items(search_term)
-    for i in records:
+    search_results = search_items(search_term)
+    for i in search_results:
         print(i[1] + ' - ' + i[0] + ' - ' + i[2])
-
 
 main()
