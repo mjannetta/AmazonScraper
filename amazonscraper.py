@@ -1,9 +1,9 @@
-import requests
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 
 records = []
+
 
 def get_url(search):
     template = 'https://www.amazon.com/s?k={}&ref=nb_sb_noss_1'
@@ -11,6 +11,7 @@ def get_url(search):
     url = template.format(search)
     url += '&page={}'
     return url
+
 
 def get_item_info(item):
     atag = item.h2.a
@@ -23,6 +24,7 @@ def get_item_info(item):
         price = 'Sold Out'
     item_info = (description, price, url)
     return item_info
+
 
 def search_items(search_term):
     global records
@@ -43,9 +45,12 @@ def search_items(search_term):
                 records.append(record)
     driver.close()
 
+
 def main():
     search_term = input("Enter the item you would like to scrape for: ")
     search_items(search_term)
     for i in records:
         print(i[1] + ' - ' + i[0] + ' - ' + i[2])
+
+
 main()
