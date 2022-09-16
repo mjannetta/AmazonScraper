@@ -25,7 +25,7 @@ def get_item_info(item):
     return item_info
 
 
-def search_items(search_term):
+def search_items(search_term, depth):
     records = []
     ser = Service(r"C:\Users\micha\Downloads\chromedriver_win32\chromedriver.exe")
     op = webdriver.ChromeOptions()
@@ -33,7 +33,7 @@ def search_items(search_term):
 
     url = get_url(search_term)
 
-    for page in range(1, 2):
+    for page in range(1, depth):
         driver.get(url.format(page))
         soup = BeautifulSoup(driver.page_source, 'html.parser')
         results = soup.find_all('div', {'data-component-type': 's-search-result'})
@@ -83,7 +83,10 @@ def sort_results_alphabetically(results):
 
 def main():
     search_term = input("Enter the item you would like to scrape for: ")
-    search_results = search_items(search_term)
+    depth = int(input("How many pages would you like to search: "))
+    while depth < 1:
+        depth = input('Error, please enter a search depth greater than or equal to 1 page: ')
+    search_results = search_items(search_term, depth)
     search_results = sort_results_price(search_results)
     print_results(search_results)
 
